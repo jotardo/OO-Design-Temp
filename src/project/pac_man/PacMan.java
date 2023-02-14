@@ -1,4 +1,4 @@
-package pac_man;
+package project.pac_man;
 
 import java.awt.Color;
 import java.awt.Dimension;

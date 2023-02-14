@@ -1,4 +1,4 @@
-package pac_man;
+package project.pac_man;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
