@@ -1,29 +1,27 @@
 package lab2;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Customer {
-	protected int customerID;
+	
+	protected String customerID;
 	protected String customerName;
 	protected String customerAddress;
-
-	protected Customer(int customerID, String customerName, String customerAddress) {
-		this.customerID = customerID;
-		this.customerName = customerName;
-		this.customerAddress = customerAddress;
+	
+	public Customer(String id, String fullName, String address) {
+		this.customerID = id;
+		this.customerName = fullName;
+		this.customerAddress = address;
 	}
-
-	public abstract int charge();
-
-	public abstract void statement();
-
-	public abstract ArrayList<? extends Reading> getReadings();
-
-	public Reading getNewReading() {
-		return getReadings().get(getReadings().size() - 1);
+	
+	public String toString() {
+		return customerID + "\t\t" + customerName + "\t\t" + customerAddress;
 	}
+	
+	public abstract List<? extends Reading> getReading();
+	
+	public abstract int calculatePrice();
+	
+	public abstract String printBills();
 
-	public Reading getOldReading() {
-		return getReadings().get(getReadings().size() - 2);
-	}
 }

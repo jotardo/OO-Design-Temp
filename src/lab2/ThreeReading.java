@@ -1,34 +1,21 @@
 package lab2;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 public class ThreeReading extends Reading {
 
-	private int highIndex; //rush time elec index
+	private int highValue;
+	private int lowValue;
 	
-	public int getHighIndex() {
-		return highIndex;
+	public ThreeReading(Date readingDate, int normalValue, int highValue, int lowValue) {
+		super(readingDate, normalValue);
+		this.highValue = highValue;
+		this.lowValue = lowValue;
 	}
-
-	public int getLowIndex() {
-		return lowIndex;
-	}
-
-	private int lowIndex; //inactive time elec index
 	
-	public ThreeReading(Date dayOfReading, int electricityIndex, int highIndex, int lowIndex) {
-		super(dayOfReading, electricityIndex);
-		this.highIndex = highIndex;
-		this.lowIndex = lowIndex;
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("ThreeReading [highIndex=").append(highIndex).append(", lowIndex=").append(lowIndex)
-				.append(", dayOfReading=").append(dayOfReading).append(", electricityIndex=").append(electricityIndex)
-				.append("]");
-		return builder.toString();
+		return DateFormat.getInstance().format(readingDate) + "\t\t" + this.normalValue + "\t\t" + this.highValue + "\t\t" + this.lowValue;
 	}
-
 
 }

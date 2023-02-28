@@ -1,11 +1,21 @@
 package lab2;
 
+import java.util.Date;
+
 public abstract class Reading {
-	protected Date dayOfReading;
-	protected int electricityIndex;
-	protected Reading(Date dayOfReading, int electricityIndex) {
+	
+	protected Date readingDate;
+	protected int normalValue;
+	
+	public Reading(Date readingDate, int normalValue) {
 		super();
-		this.dayOfReading = dayOfReading;
-		this.electricityIndex = electricityIndex;
+		this.readingDate = readingDate;
+		this.normalValue = normalValue;
 	}
+	
+	public int getNormalValue() {
+		return normalValue;
+	}
+	
+	
 }

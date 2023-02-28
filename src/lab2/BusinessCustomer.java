@@ -1,51 +1,53 @@
 package lab2;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-public class BusinessCustomer extends Customer{
+public class BusinessCustomer extends Customer {
 	
-	private long accountID;
-	private ArrayList<ThreeReading> readingList;
-
-	public BusinessCustomer(int customerID, String customerName, String customerAddress, long accountID) {
-		super(customerID, customerName, customerAddress);
-		this.accountID = accountID;
-		this.readingList = new ArrayList<ThreeReading>();
+	private String bankAccount;
+	private List<ThreeReading> readingList;
+	
+	public BusinessCustomer(String id, String fullName, String address, String bankAccount, LinkedList<ThreeReading> readingList) {
+		super(id, fullName, address);
+		this.bankAccount = bankAccount;
+		this.readingList = readingList;
 	}
 
+	public BusinessCustomer(String id, String fullName, String address, String bankAccount) {
+		this(id, fullName, address, bankAccount, new LinkedList<ThreeReading>());
+	}
+
+	public List<ThreeReading> getReading() {
+		return readingList;
+	}
+	
+	public void addReading(ThreeReading reading) {
+		this.readingList.add(reading);
+	}
+	
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("BusinessCustomer [accountID=").append(accountID).append(", customerName=").append(customerName)
-				.append(", customerAddress=").append(customerAddress).append("]");
-		return builder.toString();
+		return super.toString() + "\t\t" + this.bankAccount;
 	}
 
 	@Override
-	public int charge() {
-		ThreeReading newReading = this.readingList.get(this.readingList.size() - 1);
-		ThreeReading oldReading = this.readingList.get(this.readingList.size() - 2);
-		int usageNormal = newReading.electricityIndex - oldReading.electricityIndex;
-		int usageHigh = newReading.getHighIndex() - oldReading.getHighIndex();
-		int usageLow = newReading.getLowIndex() - oldReading.getLowIndex();
-		return usageNormal * 895 + usageHigh * 1480 + usageLow * 505;
+	public int calculatePrice() {
+		int newRead = readingList.get(readingList.size() - 1).normalValue;
+		int oldRead = readingList.get(readingList.size() - 2).normalValue;
+		int amount = newRead - oldRead;
+		int p1 = amount > 100 ? 100 : amount;
+		int p2 = amount > 150 ? 150 : amount - p1;
+		int p3 = amount > 200 ? 200 : amount - p1 - p2 ;
+		int p4 = amount > 300 ? 300 : amount - p1 - p2 - p3;
+		int p5 = amount - p1 - p2 - p3 - p4;
+		return p1 * 550 + p2 * 900 + p3 * 1210 + p4 * 1340 + p5 * 1400;
 	}
 
 	@Override
-	public void statement() {
+	public String printBills() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	@Override
-	public ArrayList<? extends Reading> getReadings() {
-		return this.readingList;
-	}
-	
-	public void addReading(ThreeReading r) {
-		if (r == null)
-			return;
-		this.readingList.add(r);
-	}
 }
