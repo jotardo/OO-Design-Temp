@@ -13,7 +13,6 @@ public class Test {
 			@Override
 			public void run() {
 				ClockTime c = new ClockTime();
-				c.addClock(new DigitalClock());
 				c.addClock(new AnalogClock());
 				c.addClock(new DigitalClock());
 				
