@@ -29,6 +29,7 @@ public class View extends JFrame implements Subscriber, ActionListener {
 	private JButton lowerF, raiseF, lowerC, raiseC;
 	private JTextField tf1, tf2;
 	private Controller c;
+	private Thermometer tPanel;
 
 	public View(Controller c) {
 		super("Application");
@@ -89,7 +90,7 @@ public class View extends JFrame implements Subscriber, ActionListener {
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 		gbc.gridheight = 2;
-		Thermometer tPanel = new Thermometer();
+		tPanel = new Thermometer();
 		p.add(tPanel, gbc);
 		lowerF.addActionListener(this);
 		raiseF.addActionListener(this);
@@ -115,6 +116,7 @@ public class View extends JFrame implements Subscriber, ActionListener {
 		private int x1 = 120, y1 = 60, indentX = 15, angle = 30;
 		private boolean started;
 		private Area area;
+		private double ratio;
 
 		public Thermometer() {
 			super();
@@ -136,7 +138,9 @@ public class View extends JFrame implements Subscriber, ActionListener {
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.setClip(area);
 			g2d.setColor(Color.white);
-			g2d.fillRect(x1, y1, getWidth() - x1 * 2, getHeight() - y1 * 2);
+			g2d.fillRect(x1, y1, getWidth() - x1 * 2, (int) ((getHeight() - y1 * 2) * (1 - ratio)));
+			g2d.setColor(Color.red);
+			g2d.fillRect(x1, y1 + (int) ((getHeight() - y1 * 2) * (1 - ratio)), getWidth() - x1 * 2, (int) ((getHeight() - y1 * 2) * ratio));
 			g2d.setColor(Color.black);
 			g2d.setStroke(new BasicStroke(5f));
 			g2d.draw(area);
@@ -146,9 +150,11 @@ public class View extends JFrame implements Subscriber, ActionListener {
 	}
 
 	@Override
-	public void updateTempature(double tempC, double tempF) {
+	public void updateTempature(double tempC, double tempF, double maxTempC) {
 		tf1.setText(tempF + "");
 		tf2.setText(tempC + "");
+		tPanel.ratio = tempC / maxTempC;
+		tPanel.repaint();
 	}
 
 }

@@ -3,23 +3,31 @@ package on_tap.cau2.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TemperatureChecker implements Publisher{
-	
+public class TemperatureChecker implements Publisher {
+
 	private List<Subscriber> subscribers;
 	private double currentTempCelcius;
+	private double minTempCelcius;
+	private double maxTempCelcius;
 	private double currentTempFarenheit;
-	
+	private double minTempFarenheit;
+	private double maxTempFarenheit;
+
 	public TemperatureChecker() {
 		this.subscribers = new ArrayList<>();
-		this.setCurrentTempFarenheit(0);
+		this.minTempCelcius = 0;
+		this.maxTempCelcius = 100;
+		this.minTempFarenheit = 32;
+		this.maxTempFarenheit = 212;
+		this.setCurrentTempCelcius(0);
 	}
-	
+
 	public void setCurrentTempCelcius(double currentTemp) {
 		this.currentTempCelcius = currentTemp;
 		this.currentTempFarenheit = currentTemp * 1.8 + 32;
 		this.notifySubscribersDrawView();
 	}
-	
+
 	public void setCurrentTempFarenheit(double currentTemp) {
 		this.currentTempFarenheit = currentTemp;
 		this.currentTempCelcius = (currentTemp - 32) / 1.8;
@@ -38,24 +46,36 @@ public class TemperatureChecker implements Publisher{
 
 	@Override
 	public void notifySubscribersDrawView() {
-		for (Subscriber s: subscribers)
-			s.updateTempature(currentTempCelcius, currentTempFarenheit);
+		for (Subscriber s : subscribers)
+			s.updateTempature(currentTempCelcius, currentTempFarenheit, maxTempCelcius);
 	}
 
 	public void lowerFareheitTemp(int amount) {
-		setCurrentTempFarenheit(currentTempFarenheit - amount);
+		if (currentTempFarenheit + amount < minTempFarenheit)
+			setCurrentTempFarenheit(minTempFarenheit);
+		else
+			setCurrentTempFarenheit(currentTempFarenheit - amount);
 	}
 
 	public void raiseFareheitTemp(int amount) {
-		setCurrentTempFarenheit(currentTempFarenheit + amount);
+		if (currentTempFarenheit + amount > maxTempFarenheit)
+			setCurrentTempFarenheit(maxTempFarenheit);
+		else
+			setCurrentTempFarenheit(currentTempFarenheit + amount);
 	}
 
 	public void lowerCelciusTemp(int amount) {
-		setCurrentTempCelcius(currentTempCelcius - amount);
+		if (currentTempCelcius - amount < minTempCelcius)
+			setCurrentTempCelcius(minTempCelcius);
+		else
+			setCurrentTempCelcius(currentTempCelcius - amount);
 	}
 
 	public void raiseCelciusTemp(int amount) {
-		setCurrentTempCelcius(currentTempCelcius + amount);
+		if (currentTempCelcius + amount > maxTempCelcius)
+			setCurrentTempCelcius(maxTempCelcius);
+		else
+			setCurrentTempCelcius(currentTempCelcius + amount);
 	}
 
 }
