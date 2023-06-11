@@ -1,5 +1,6 @@
 package on_tap.cau2.view;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,6 +9,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -32,7 +37,7 @@ public class View extends JFrame implements Subscriber, ActionListener {
 		setupGUI();
 		pack();
 		setLocationRelativeTo(null);
-		setResizable(false);
+//		setResizable(false);
 		setVisible(true);
 	}
 
@@ -57,10 +62,10 @@ public class View extends JFrame implements Subscriber, ActionListener {
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.gridwidth = 1;
-		fPanel.add(lowerF = new JButton("Lower"), gbc);
+		fPanel.add(lowerF = new JButton("Lower by 5"), gbc);
 		gbc.gridx = 1;
 		gbc.gridy = 1;
-		fPanel.add(raiseF = new JButton("Raise"), gbc);
+		fPanel.add(raiseF = new JButton("Raise by 5"), gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 1;
@@ -76,10 +81,10 @@ public class View extends JFrame implements Subscriber, ActionListener {
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.gridwidth = 1;
-		cPanel.add(lowerC = new JButton("Lower"), gbc);
+		cPanel.add(lowerC = new JButton("Lower by 5"), gbc);
 		gbc.gridx = 1;
 		gbc.gridy = 1;
-		cPanel.add(raiseC = new JButton("Raise"), gbc);
+		cPanel.add(raiseC = new JButton("Raise by 5"), gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 0;
@@ -107,27 +112,34 @@ public class View extends JFrame implements Subscriber, ActionListener {
 	private class Thermometer extends JPanel {
 
 		private static final long serialVersionUID = 1L;
+		private int x1 = 120, y1 = 60, indentX = 15, angle = 30;
+		private boolean started;
+		private Area area;
 
 		public Thermometer() {
 			super();
 			setPreferredSize(new Dimension(300, 450));
+			started = false;
 		}
 
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			int x1 = 90, y1 = 50, x2 = 145, y2 = 80;
+			if (!started) {
+				started = true;
+				area = new Area();
+				area.add(new Area(new Arc2D.Double(x1, y1 + (getHeight() - y1 * 2) - (getWidth() - x1 * 2),
+						getWidth() - x1 * 2, getWidth() - x1 * 2, 180 - (90 - angle), 360 - angle * 2, Arc2D.PIE)));
+				area.add(new Area(new RoundRectangle2D.Double(x1 + indentX, y1, getWidth() - x1 * 2 - indentX * 2,
+						getHeight() - y1 * 2 - 4, indentX, indentX + 10)));
+			}
 			Graphics2D g2d = (Graphics2D) g.create();
+			g2d.setClip(area);
 			g2d.setColor(Color.white);
 			g2d.fillRect(x1, y1, getWidth() - x1 * 2, getHeight() - y1 * 2);
-			g2d.setColor(Color.BLACK);
-			g2d.drawRect(x1, y1, getWidth() - x1 * 2, getHeight() - y1 * 2);
-			g2d.setColor(Color.white);
-			g2d.fillRoundRect(x2, y2, getWidth() - x2 * 2, getHeight() - y2 * 2, 10, 10);
-			g2d.setColor(Color.BLACK);
-			g2d.drawRoundRect(x2, y2, getWidth() - x2 * 2, getHeight() - y2 * 2, 10, 10);
-			g2d.setColor(Color.red);
-			g2d.fillRoundRect(x2, y2 + 50, getWidth() - x2 * 2, getHeight() - y2 * 2 - 50, 10, 10);
+			g2d.setColor(Color.black);
+			g2d.setStroke(new BasicStroke(5f));
+			g2d.draw(area);
 			g2d.dispose();
 		}
 

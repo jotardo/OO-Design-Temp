@@ -9,6 +9,7 @@ public class ClockTime implements ClockObserver{
 	private int hour;
 	private int minute;
 	private int second;
+	private int milisecond;
 	private List<ClockObservable> clocks = new ArrayList<ClockObservable>();
 	
 	public void tick() {
@@ -16,6 +17,7 @@ public class ClockTime implements ClockObserver{
 		this.hour = c.get(Calendar.HOUR_OF_DAY);
 		this.minute = c.get(Calendar.MINUTE);
 		this.second = c.get(Calendar.SECOND);
+		this.milisecond = c.get(Calendar.MILLISECOND);
 		notifyAllClocks();
 	}
 	
@@ -32,7 +34,7 @@ public class ClockTime implements ClockObserver{
 	@Override
 	public void notifyAllClocks() {
 		for (ClockObservable co : clocks)
-			co.update(this.hour, this.minute, this.second);
+			co.update(this.hour, this.minute, this.second, this.milisecond);
 	}
 	
 	

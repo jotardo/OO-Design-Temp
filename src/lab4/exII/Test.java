@@ -16,7 +16,7 @@ public class Test {
 				c.addClock(new AnalogClock());
 				c.addClock(new DigitalClock());
 				
-				Timer t = new Timer(1000, new ActionListener() {
+				Timer t = new Timer(1, new ActionListener() {
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {

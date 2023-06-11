@@ -12,6 +12,7 @@ public class Controller {
 		this.model = model;
 		this.view = new View(this);
 		this.model.addSubscriber(view);
+		this.model.notifySubscribersDrawView();
 	}
 	
 	public void lowerFareheitTemp(int amount) {

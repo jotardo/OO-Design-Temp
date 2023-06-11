@@ -11,18 +11,19 @@ public class TemperatureChecker implements Publisher{
 	
 	public TemperatureChecker() {
 		this.subscribers = new ArrayList<>();
+		this.setCurrentTempFarenheit(0);
 	}
 	
 	public void setCurrentTempCelcius(double currentTemp) {
 		this.currentTempCelcius = currentTemp;
 		this.currentTempFarenheit = currentTemp * 1.8 + 32;
-		this.notifySubscribers();
+		this.notifySubscribersDrawView();
 	}
 	
 	public void setCurrentTempFarenheit(double currentTemp) {
 		this.currentTempFarenheit = currentTemp;
 		this.currentTempCelcius = (currentTemp - 32) / 1.8;
-		this.notifySubscribers();
+		this.notifySubscribersDrawView();
 	}
 
 	@Override
@@ -36,7 +37,7 @@ public class TemperatureChecker implements Publisher{
 	}
 
 	@Override
-	public void notifySubscribers() {
+	public void notifySubscribersDrawView() {
 		for (Subscriber s: subscribers)
 			s.updateTempature(currentTempCelcius, currentTempFarenheit);
 	}

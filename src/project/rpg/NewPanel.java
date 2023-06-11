@@ -2,13 +2,12 @@ package project.rpg;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
 public class NewPanel extends JPanel {
 	
+	private static final long serialVersionUID = 1L;
 	private int x, y;
 	
 	public NewPanel() {
